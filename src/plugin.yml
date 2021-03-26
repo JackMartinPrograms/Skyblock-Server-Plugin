@@ -1,0 +1,13 @@
+name: ZenergySkyblock
+main: me.jackster090.Main.ZenergySkyblock
+version: 1.0
+api-version: 1.16
+commands:
+    spawnjoe:
+        description: SpawnVillager
+    openmenu:
+        description: Open Skyblock Menu
+    voidworld:
+        description: makes void world
+    stat:
+        description: View Your Stats!
