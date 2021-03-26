@@ -13,7 +13,7 @@ PLAYER ADDONS:
 	- Skill System
 	
 GENERAL STUFF:
-	- Fix Mob Max Health
+	- Fix Mob Max Health not working
 	- Item Rarity System
 	- Pets
 	- Custom Ender Chest
