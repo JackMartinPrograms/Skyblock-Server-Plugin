@@ -13,6 +13,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import me.jackster090.Handlers.EventsHandler;
 import me.jackster090.PlayerAddons.SkyblockMenu;
 import me.jackster090.PlayerAddons.StatsTabCompleter;
+import me.jackster090.Skyblock.SkyblockIsland;
 import me.jackster090.Spawner.End;
 import me.jackster090.Utils.Utils;
 
@@ -20,6 +21,7 @@ public class ZenergySkyblock extends JavaPlugin {
 	
 	public WorldGuardPlugin worldGuard;
 	
+	private SkyblockIsland skyblockIsland;
 	private SkyblockMenu skyblockMenu;
 	private Utils utils;
 	private End end;
@@ -32,9 +34,14 @@ public class ZenergySkyblock extends JavaPlugin {
 		
 		worldGuard = getWorldGuard();
 		
+		skyblockIsland = new SkyblockIsland(this);
 		skyblockMenu = new SkyblockMenu();
 		utils = new Utils();
 		end = new End();
+	}
+	
+	public void onDisable() {
+
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -52,9 +59,14 @@ public class ZenergySkyblock extends JavaPlugin {
 			}
 			
 			if (label.equalsIgnoreCase("voidworld")) {
-				utils.createVoidWorld(player.getName());
+				skyblockIsland.createIslandWorld(player.getName());
+				return true;
 			}
 			
+			if (label.equalsIgnoreCase("ec")) {
+				return true;
+			}
+
 			if (label.equalsIgnoreCase("stat")) {
 				if (args.length == 0) {
 					player.sendMessage(utils.translateColors(

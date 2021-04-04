@@ -1,7 +1,6 @@
 package me.jackster090.Utils;
 
 import org.bukkit.Material;
-import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -37,6 +36,12 @@ public class Utils {
 		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		RegionManager regions = container.get(world);
 		
+		if (regions.getRegion(regionName) == null) {
+			ProtectedRegion region = regions.getRegion("No Region Found");
+			regions.addRegion(region);
+			return regions.getRegion(region.getId());
+		}
+		
 		return regions.getRegion(regionName);
 	}
 	
@@ -50,12 +55,6 @@ public class Utils {
 			}
 		}
 		return false;
-	}
-	
-	public void createVoidWorld(String worldName) {
-		WorldCreator wc = new WorldCreator(worldName);
-		wc.generator(new EmptyChunkGenerator());
-        wc.createWorld();
 	}
 	
 	public String translateColors(String string) {

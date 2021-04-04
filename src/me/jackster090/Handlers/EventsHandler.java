@@ -18,10 +18,13 @@ import org.bukkit.inventory.ItemStack;
 
 import me.jackster090.CustomItems.SkyblockMenuItem;
 import me.jackster090.PlayerAddons.SkyblockMenu;
+import me.jackster090.Scoreboard.PlayerScoreboard;
 import me.jackster090.Utils.Utils;
 
 public class EventsHandler implements Listener {
 	
+	@SuppressWarnings("unused")
+	private PlayerScoreboard playerScoreboard;
 	private SkyblockMenuItem skyblockMenuItem;
 	private SkyblockMenu skyblockMenu;
 	private Utils utils;
@@ -32,6 +35,74 @@ public class EventsHandler implements Listener {
 		skyblockMenu = new SkyblockMenu();
 		utils = new Utils();
 		//end = new End();
+	}
+	
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		skyblockMenuItem.givePlayerItem(event.getPlayer());
+		
+		playerScoreboard = new PlayerScoreboard(event.getPlayer());
+	}
+	
+	@EventHandler
+	public void onPlayerLeave(PlayerQuitEvent event) {
+		event.getPlayer().getInventory().removeItem(skyblockMenuItem.getMenuItem());
+	}
+	
+	@EventHandler
+	public void onPlayerMove(PlayerMoveEvent event) {
+		if (event.getPlayer().getWorld().getName().equals("world")) {
+			//if player is in specific region in world, spawn mobs (world is for testing)
+		}
+	}
+	
+	
+	@EventHandler
+	public void onPlayerThrow(PlayerDropItemEvent event) {
+		ItemStack item = event.getItemDrop().getItemStack();
+		if (utils.checkIfItemsAreTheSame(item, skyblockMenuItem.getMenuItem())) {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerInteract(PlayerInteractEvent event) {
+		Player player = event.getPlayer();	
+		ItemStack item = event.getItem();
+		if (event.getAction() == Action.RIGHT_CLICK_AIR || 
+				event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			if (utils.checkIfItemsAreTheSame(item, skyblockMenuItem.getMenuItem())) {
+				skyblockMenu.openMenu(player);
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event) {
+		ItemStack item = event.getCurrentItem();
+		if (item != null) {
+			if (utils.checkIfItemsAreTheSame(item, skyblockMenuItem.getMenuItem())) {
+				event.setCancelled(true);
+				skyblockMenu.openMenu((Player) event.getWhoClicked());
+			}
+			
+			//Skyblock Menu Inventory
+			
+			if (event.getClickedInventory() == skyblockMenu.getInventory()) {
+				event.setCancelled(true);
+				
+				if (utils.checkIfItemsAreTheSame(item, skyblockMenu.closeMenu)) {
+					event.getWhoClicked().closeInventory();
+					return;
+				}
+				
+				if (utils.checkIfItemsAreTheSame(item, skyblockMenu.workbench)) {
+					event.getWhoClicked().openWorkbench(
+							event.getWhoClicked().getLocation(), true);
+				}
+			}
+		}		
+		return;
 	}
 	
 	@EventHandler
@@ -58,67 +129,6 @@ public class EventsHandler implements Listener {
 				event.setDroppedExp(0);
 			}
 		}
-	}
-	
-	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent event) {
-		if (event.getPlayer().getWorld().getName().equals("world")) {
-			//if player is in specific region in world, spawn mobs (world is for testing)
-		}
-	}
-	
-	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event) {
-		Player player = event.getPlayer();	
-		ItemStack item = event.getItem();
-		if (event.getAction() == Action.RIGHT_CLICK_AIR || 
-				event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			if (utils.checkIfItemsAreTheSame(item, skyblockMenuItem.getMenuItem())) {
-				skyblockMenu.openMenu(player);
-			}
-		}
-	}
-	
-	@EventHandler
-	public void onInventoryClick(InventoryClickEvent event) {
-		ItemStack item = event.getCurrentItem();
-		if (utils.checkIfItemsAreTheSame(item, skyblockMenuItem.getMenuItem())) {
-			event.setCancelled(true);
-			skyblockMenu.openMenu((Player) event.getWhoClicked());
-		}
-		
-		if (utils.checkIfItemsAreTheSame(item, skyblockMenu.closeMenu)) {
-			event.setCancelled(true);
-			event.getWhoClicked().closeInventory();
-			return;
-		}
-		
-		//Skyblock Menu Inventory
-		
-		if (event.getClickedInventory() == skyblockMenu.getInventory()) {
-			event.setCancelled(true);
-			if (utils.checkIfItemsAreTheSame(item, skyblockMenu.workbench)) {
-				event.getWhoClicked().openWorkbench(event.getWhoClicked().getLocation(), true);
-			}
-		}
-	}
-	
-	@EventHandler
-	public void onPlayerThrow(PlayerDropItemEvent event) {
-		ItemStack item = event.getItemDrop().getItemStack();
-		if (utils.checkIfItemsAreTheSame(item, skyblockMenuItem.getMenuItem())) {
-			event.setCancelled(true);
-		}
-	}
-	
-	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent event) {
-		skyblockMenuItem.givePlayerItem(event.getPlayer());
-	}
-	
-	@EventHandler
-	public void onPlayerLeave(PlayerQuitEvent event) {
-		event.getPlayer().getInventory().removeItem(skyblockMenuItem.getMenuItem());
 	}
 	
 	

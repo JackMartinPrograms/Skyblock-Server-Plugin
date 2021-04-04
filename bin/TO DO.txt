@@ -1,0 +1,25 @@
+SKYBLOCK RELATED:
+	- Generate Empty World With Island
+	- Island Settings Menu
+		- Lock Island (No players can visit)
+	- Visiting Other Players Islands
+	- Teleport To Island Spawn (Skyblock Main Menu)
+	- Island Achievements
+	
+PLAYER ADDONS:
+	- Friend System
+	- Guild System
+	- Backpacks
+	- Skill System
+	
+GENERAL STUFF:
+	- Fix Mob Max Health
+	- Item Rarity System
+	- Pets
+	- Custom Ender Chest
+	- Custom Potions
+		- Haste
+		- Strength
+		- Wither (Splash?)
+	- Stat Other Players (With Permission?)
+		- Make A Gui Instead?

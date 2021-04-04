@@ -11,3 +11,5 @@ commands:
         description: makes void world
     stat:
         description: View Your Stats!
+    ec:
+        description: Opens Your Ender Chest!
