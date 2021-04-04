@@ -19,6 +19,8 @@ import me.jackster090.Utils.Utils;
 
 public class ZenergySkyblock extends JavaPlugin {
 	
+	private static ZenergySkyblock instance;
+	
 	public WorldGuardPlugin worldGuard;
 	
 	private SkyblockIsland skyblockIsland;
@@ -31,6 +33,8 @@ public class ZenergySkyblock extends JavaPlugin {
 		pm.registerEvents(new EventsHandler(), this);
 		
 		this.getCommand("stat").setTabCompleter(new StatsTabCompleter());
+		
+		instance = this;
 		
 		worldGuard = getWorldGuard();
 		
@@ -108,6 +112,9 @@ public class ZenergySkyblock extends JavaPlugin {
 		return (WorldGuardPlugin) plugin;
 	}
 	
+	public static ZenergySkyblock getInstance() {
+		return instance;
+	}
 	
 	
 	

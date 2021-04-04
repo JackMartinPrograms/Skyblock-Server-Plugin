@@ -9,6 +9,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCreativeEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -18,12 +20,12 @@ import org.bukkit.inventory.ItemStack;
 
 import me.jackster090.CustomItems.SkyblockMenuItem;
 import me.jackster090.PlayerAddons.SkyblockMenu;
+import me.jackster090.Scoreboard.Board;
 import me.jackster090.Scoreboard.PlayerScoreboard;
 import me.jackster090.Utils.Utils;
 
 public class EventsHandler implements Listener {
 	
-	@SuppressWarnings("unused")
 	private PlayerScoreboard playerScoreboard;
 	private SkyblockMenuItem skyblockMenuItem;
 	private SkyblockMenu skyblockMenu;
@@ -42,11 +44,15 @@ public class EventsHandler implements Listener {
 		skyblockMenuItem.givePlayerItem(event.getPlayer());
 		
 		playerScoreboard = new PlayerScoreboard(event.getPlayer());
+		playerScoreboard.start(event.getPlayer());
 	}
 	
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent event) {
 		event.getPlayer().getInventory().removeItem(skyblockMenuItem.getMenuItem());
+		
+		Board board = new Board(event.getPlayer().getUniqueId());		
+		if (board.hasID()) board.stop();
 	}
 	
 	@EventHandler
@@ -78,8 +84,14 @@ public class EventsHandler implements Listener {
 	}
 	
 	@EventHandler
+	public void inventoryCreativeEvent(InventoryCreativeEvent event) {
+		
+	}
+	
+	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		ItemStack item = event.getCurrentItem();
+		if (event.getWhoClicked().getOpenInventory().getType() == InventoryType.CREATIVE) return;
 		if (item != null) {
 			if (utils.checkIfItemsAreTheSame(item, skyblockMenuItem.getMenuItem())) {
 				event.setCancelled(true);
